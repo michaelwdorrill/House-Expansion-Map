@@ -1,0 +1,133 @@
+{
+  "scenarios": [
+    {
+      "size": 435,
+      "peoplePerRep": 761169,
+      "file": "scenario-435.json",
+      "districts": 435
+    },
+    {
+      "size": 573,
+      "peoplePerRep": 577851,
+      "file": "scenario-573.json",
+      "districts": 573
+    },
+    {
+      "size": 692,
+      "peoplePerRep": 478480,
+      "file": "scenario-692.json",
+      "districts": 692
+    },
+    {
+      "size": 870,
+      "peoplePerRep": 380584,
+      "file": "scenario-870.json",
+      "districts": 870
+    },
+    {
+      "size": 1000,
+      "peoplePerRep": 331108,
+      "file": "scenario-1000.json",
+      "districts": 1000
+    },
+    {
+      "size": 1500,
+      "peoplePerRep": 220739,
+      "file": "scenario-1500.json",
+      "districts": 1500
+    }
+  ],
+  "cycles": [
+    "PRES16",
+    "PRES20",
+    "PRES24"
+  ],
+  "voteCols": [
+    "PRES16_D",
+    "PRES16_R",
+    "PRES20_D",
+    "PRES20_R",
+    "PRES24_D",
+    "PRES24_R"
+  ],
+  "totalApportionmentPop": 331108441,
+  "currentHouseSize": 435,
+  "references": {
+    "wyomingRule": 573,
+    "cubeRoot": 692
+  },
+  "citations": [
+    {
+      "name": "County & state boundaries (us-10m TopoJSON)",
+      "source": "Vega Datasets (derived from US Census TIGER/Line)",
+      "url": "https://github.com/vega/vega-datasets"
+    },
+    {
+      "name": "County population (2019 estimates)",
+      "source": "JHU CSSE UID_ISO_FIPS lookup table (US Census Population Estimates)",
+      "url": "https://github.com/CSSEGISandData/COVID-19"
+    },
+    {
+      "name": "County presidential results 2016 / 2020 / 2024",
+      "source": "tonmcg/US_County_Level_Election_Results_08-24",
+      "url": "https://github.com/tonmcg/US_County_Level_Election_Results_08-24"
+    },
+    {
+      "name": "Apportionment populations (2020 Census)",
+      "source": "US Census Bureau, 2020 Census Apportionment",
+      "url": "https://www.census.gov/data/tables/2020/dec/2020-apportionment-data.html"
+    }
+  ],
+  "states": {
+    "AL": "Alabama",
+    "AK": "Alaska",
+    "AZ": "Arizona",
+    "AR": "Arkansas",
+    "CA": "California",
+    "CO": "Colorado",
+    "CT": "Connecticut",
+    "DE": "Delaware",
+    "FL": "Florida",
+    "GA": "Georgia",
+    "HI": "Hawaii",
+    "ID": "Idaho",
+    "IL": "Illinois",
+    "IN": "Indiana",
+    "IA": "Iowa",
+    "KS": "Kansas",
+    "KY": "Kentucky",
+    "LA": "Louisiana",
+    "ME": "Maine",
+    "MD": "Maryland",
+    "MA": "Massachusetts",
+    "MI": "Michigan",
+    "MN": "Minnesota",
+    "MS": "Mississippi",
+    "MO": "Missouri",
+    "MT": "Montana",
+    "NE": "Nebraska",
+    "NV": "Nevada",
+    "NH": "New Hampshire",
+    "NJ": "New Jersey",
+    "NM": "New Mexico",
+    "NY": "New York",
+    "NC": "North Carolina",
+    "ND": "North Dakota",
+    "OH": "Ohio",
+    "OK": "Oklahoma",
+    "OR": "Oregon",
+    "PA": "Pennsylvania",
+    "RI": "Rhode Island",
+    "SC": "South Carolina",
+    "SD": "South Dakota",
+    "TN": "Tennessee",
+    "TX": "Texas",
+    "UT": "Utah",
+    "VT": "Vermont",
+    "VA": "Virginia",
+    "WA": "Washington",
+    "WV": "West Virginia",
+    "WI": "Wisconsin",
+    "WY": "Wyoming"
+  }
+}
