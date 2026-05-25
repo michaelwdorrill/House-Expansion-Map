@@ -27,6 +27,11 @@
           <svg id="map" role="img" aria-label="US congressional district map"></svg>
           <div id="tooltip" class="tooltip" hidden></div>
           <div class="legend" id="legend"></div>
+          <div class="map-controls" id="mapControls">
+            <button type="button" id="zoomIn" title="Zoom in" aria-label="Zoom in">+</button>
+            <button type="button" id="zoomOut" title="Zoom out" aria-label="Zoom out">&minus;</button>
+            <button type="button" id="zoomReset" title="Reset view" aria-label="Reset view">Reset</button>
+          </div>
         </div>
 
         <aside class="panel">
@@ -41,6 +46,15 @@
               <span class="unit">people per representative</span>
             </div>
             <div class="ticks" id="sliderTicks"></div>
+          </div>
+
+          <div class="control" id="lineModeControl" hidden>
+            <label for="lineMode">District lines</label>
+            <select id="lineMode">
+              <option value="real">Real current districts (119th Congress)</option>
+              <option value="neutral">Neutral redraw (partisan-blind)</option>
+            </select>
+            <p class="hint" id="lineModeHint"></p>
           </div>
 
           <div class="control">

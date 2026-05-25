@@ -35,9 +35,23 @@ main { flex: 1; }
 .layout { display: grid; grid-template-columns: 1fr 360px; height: calc(100vh - 132px); }
 .map-wrap { position: relative; background: var(--panel); }
 #map { width: 100%; height: 100%; display: block; }
-.state-outline { fill: none; stroke: #9aa1ac; stroke-width: .6; }
-.district { stroke: #ffffff; stroke-width: .35; cursor: pointer; }
+.state-outline { fill: none; stroke: #9aa1ac; stroke-width: .6; vector-effect: non-scaling-stroke; }
+.district { stroke: #ffffff; stroke-width: .35; cursor: pointer; vector-effect: non-scaling-stroke; }
 .district:hover { stroke: #1a1d23; stroke-width: 1.1; }
+#map { touch-action: none; }
+.map-wrap.zoomed #map { cursor: move; }
+
+.map-controls {
+  position: absolute; top: 12px; right: 12px; display: flex; flex-direction: column;
+  gap: 4px; z-index: 6;
+}
+.map-controls button {
+  width: 34px; min-height: 34px; border: 1px solid var(--line); background: rgba(255,255,255,.95);
+  border-radius: 6px; cursor: pointer; font-size: 1.15rem; font-weight: 600; color: var(--ink);
+  line-height: 1; display: grid; place-items: center; box-shadow: 0 1px 4px rgba(0,0,0,.12);
+}
+.map-controls button#zoomReset { font-size: .68rem; min-height: 0; padding: .35rem 0; }
+.map-controls button:hover { background: #fff; border-color: #9aa1ac; }
 
 .tooltip {
   position: absolute; pointer-events: none; background: rgba(26,29,35,.95); color: #fff;

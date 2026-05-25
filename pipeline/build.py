@@ -13,6 +13,7 @@ from pathlib import Path
 
 import geopandas as gpd
 
+import realmap
 import sources
 from apportion import apportion, cube_root_size, people_per_rep, wyoming_rule_size
 from districting import VOTE_COLS, build_districts
@@ -79,6 +80,17 @@ def build_scenario(counties: gpd.GeoDataFrame, n: int) -> dict:
     return {"type": "FeatureCollection", "features": _round_geojson(gdf)}
 
 
+def build_real_scenario(counties: gpd.GeoDataFrame) -> dict | None:
+    """GeoJSON of the actual 119th-Congress districts, or None if unavailable."""
+    gdf = realmap.build_real_map(counties)
+    if gdf is None or gdf.empty:
+        return None
+    gdf = gdf.copy()
+    gdf["geometry"] = gdf.geometry.simplify(DISTRICT_SIMPLIFY_M).buffer(0)
+    gdf = gdf.to_crs(4326)
+    return {"type": "FeatureCollection", "features": _round_geojson(gdf)}
+
+
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     print("Loading counties ...")
@@ -109,6 +121,25 @@ def main() -> int:
              "districts": len(fc["features"])}
         )
         print(f"  N={n}: {len(fc['features'])} districts, {kb:.0f} KB, {time.time() - t:.1f}s")
+
+    # Real-current-districts baseline (best-effort; needs cd119.zip).
+    try:
+        real_fc = build_real_scenario(counties)
+    except Exception as exc:  # noqa: BLE001
+        print(f"  real-lines baseline failed ({exc}); omitting")
+        real_fc = None
+    if real_fc:
+        rp = OUT / "scenario-435-real.json"
+        rp.write_text(json.dumps(real_fc))
+        manifest["realMap"] = {
+            "size": 435,
+            "file": rp.name,
+            "districts": len(real_fc["features"]),
+            "label": "Real current districts (119th Congress)",
+            "note": "Actual 119th-Congress boundaries; partisan lean is county-areal "
+                    "apportioned, so single-district figures are approximate.",
+        }
+        print(f"  real-lines baseline: {len(real_fc['features'])} districts -> {rp.name}")
 
     (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2))
     print("Wrote manifest with scenarios:", [s["size"] for s in manifest["scenarios"]])

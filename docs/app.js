@@ -18,6 +18,8 @@ const state = {
   current: null,
   model: "blend",
   index: 0,
+  lineMode: "real",
+  currentIsReal: false,
 };
 
 const fmt = (n) => n.toLocaleString("en-US");
@@ -51,18 +53,32 @@ function ratingOf(s) {
 const svg = d3.select("#map");
 const projection = d3.geoAlbersUsa();
 const path = d3.geoPath(projection);
-let gStates, gDistricts;
+const MIN_ZOOM = 1, MAX_ZOOM = 40;
+let gZoom, gStates, gDistricts, zoom;
 
 function sizeMap() {
   const wrap = document.querySelector(".map-wrap");
   const w = wrap.clientWidth, h = wrap.clientHeight;
   svg.attr("viewBox", `0 0 ${w} ${h}`).attr("width", w).attr("height", h);
   if (state.states) projection.fitExtent([[8, 8], [w - 8, h - 8]], state.states);
+  if (zoom) zoom.extent([[0, 0], [w, h]]).translateExtent([[0, 0], [w, h]]);
 }
 
 function setupLayers() {
-  gStates = svg.append("g");
-  gDistricts = svg.append("g");
+  gZoom = svg.append("g").attr("class", "zoom-layer");
+  gStates = gZoom.append("g");
+  gDistricts = gZoom.append("g");
+  zoom = d3.zoom()
+    .scaleExtent([MIN_ZOOM, MAX_ZOOM])
+    .on("zoom", (event) => {
+      gZoom.attr("transform", event.transform);
+      document.querySelector(".map-wrap").classList.toggle("zoomed", event.transform.k > 1.01);
+    });
+  svg.call(zoom);
+}
+
+function resetZoom() {
+  svg.transition().duration(300).call(zoom.transform, d3.zoomIdentity);
 }
 
 function renderStates() {
@@ -151,21 +167,47 @@ function updateSummary() {
     `${pct(Math.abs(eg))} (favors ${eg > 0 ? "R" : "D"})`;
   document.getElementById("distortionNote").textContent =
     `If seats matched the statewide-summed two-party vote exactly, Democrats would hold ~${propDem.toFixed(0)} of ${total}. ` +
-    `The map gives them ${demSeats}. Smaller districts tend to shrink this gap.`;
+    `The map gives them ${demSeats}. ` +
+    (state.currentIsReal
+      ? "These are the actual current districts, so this gap reflects today's real map (areal vote approximations aside)."
+      : "Smaller districts tend to shrink this gap.");
 }
 
 // --- scenario loading ----------------------------------------------------
+function realMapFor(size) {
+  const rm = state.manifest.realMap;
+  return rm && rm.size === size ? rm : null;
+}
+
+function updateLineModeControl(rm, useReal) {
+  const ctrl = document.getElementById("lineModeControl");
+  if (!ctrl) return;
+  ctrl.hidden = !rm;
+  if (!rm) return;
+  document.getElementById("lineMode").value = state.lineMode;
+  document.getElementById("lineModeHint").textContent = useReal
+    ? rm.note
+    : "Partisan-blind splitline redraw at the same seat count, for an apples-to-apples comparison.";
+}
+
 async function loadScenario(idx) {
   state.index = idx;
   const sc = state.scenarios[idx];
   document.getElementById("houseSize").textContent = fmt(sc.size);
   document.getElementById("perRep").textContent = fmt(sc.peoplePerRep);
-  if (!state.scenarioCache.has(sc.file)) {
+
+  const rm = realMapFor(sc.size);
+  const useReal = !!rm && state.lineMode === "real";
+  state.currentIsReal = useReal;
+  updateLineModeControl(rm, useReal);
+
+  const file = useReal ? rm.file : sc.file;
+  if (!state.scenarioCache.has(file)) {
     gDistricts.selectAll("path").remove();
-    const fc = await fetch("data/" + sc.file).then((r) => r.json());
-    state.scenarioCache.set(sc.file, fc);
+    const fc = await fetch("data/" + file).then((r) => r.json());
+    state.scenarioCache.set(file, fc);
   }
-  state.current = state.scenarioCache.get(sc.file);
+  state.current = state.scenarioCache.get(file);
   renderDistricts();
   updateSummary();
 }
@@ -254,14 +296,30 @@ function setupControls() {
     updateSummary();
   });
 
+  const lineMode = document.getElementById("lineMode");
+  if (lineMode) {
+    lineMode.addEventListener("change", (e) => {
+      state.lineMode = e.target.value;
+      loadScenario(state.index);
+    });
+  }
+
   document.getElementById("legend").innerHTML =
     RATINGS.map((r) => `<div class="row"><span class="sw" style="background:${r.color}"></span>${r.label}</div>`).join("");
+
+  const zoomBy = (k) => svg.transition().duration(250).call(zoom.scaleBy, k);
+  document.getElementById("zoomIn").addEventListener("click", () => zoomBy(1.6));
+  document.getElementById("zoomOut").addEventListener("click", () => zoomBy(1 / 1.6));
+  document.getElementById("zoomReset").addEventListener("click", resetZoom);
 }
 
 let resizeTimer;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => { sizeMap(); renderStates(); renderDistricts(); }, 150);
+  resizeTimer = setTimeout(() => {
+    sizeMap(); renderStates(); renderDistricts();
+    svg.call(zoom.transform, d3.zoomIdentity);
+  }, 150);
 });
 
 // --- boot ----------------------------------------------------------------
