@@ -89,6 +89,8 @@ select { width: 100%; padding: .45rem; border: 1px solid var(--line); border-rad
 .ratings .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
 .metric-row { display: flex; justify-content: space-between; font-size: .85rem; padding: .22rem 0; }
 .metric-row b { font-variant-numeric: tabular-nums; }
+.metric-row.sub { padding-top: 0; margin-top: -.18rem; color: var(--muted); font-size: .78rem; }
+.metric-row.sub span:first-child { padding-left: .7rem; }
 
 footer { padding: .5rem 1.3rem; background: var(--panel); border-top: 1px solid var(--line); font-size: .73rem; color: var(--muted); }
 
@@ -99,6 +101,20 @@ footer { padding: .5rem 1.3rem; background: var(--panel); border-top: 1px solid 
 .prose th, .prose td { border: 1px solid var(--line); padding: .4rem .55rem; text-align: left; }
 .prose a { color: #2166ac; }
 .loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: .9rem; }
+
+.chart { width: 100%; height: auto; display: block; margin: .5rem 0 .2rem; }
+.chart .axis text { font-size: 11px; fill: var(--muted); }
+.chart .axis path, .chart .axis line { stroke: var(--line); }
+.chart .axis-label { font-size: 11px; fill: var(--muted); font-weight: 600; }
+.chart-cap { color: var(--muted); font-size: .82rem; margin: .2rem 0 0; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 1rem; font-size: .78rem; color: var(--muted); margin: .6rem 0 0; }
+.chart-legend .k { display: inline-block; width: 16px; height: 3px; vertical-align: middle; margin-right: 5px; }
+.callout { background: #eef3f8; border: 1px solid #d6e2ee; border-radius: 8px; padding: .75rem .9rem; margin: 1rem 0; }
+.dilbar { display: flex; align-items: center; gap: .6rem; margin: .32rem 0; font-size: .82rem; }
+.dilbar .lbl { width: 84px; color: var(--muted); }
+.dilbar .track { flex: 1; background: #dce3ec; border-radius: 4px; height: 14px; overflow: hidden; }
+.dilbar .fill { height: 100%; background: var(--safe-d); }
+.dilbar b { width: 52px; text-align: right; font-variant-numeric: tabular-nums; }
 
 @media (max-width: 820px) {
   .layout { grid-template-columns: 1fr; height: auto; }

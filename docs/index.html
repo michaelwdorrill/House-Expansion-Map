@@ -15,6 +15,7 @@
     </div>
     <nav class="tabs">
       <button class="tab active" data-tab="map">Map</button>
+      <button class="tab" data-tab="lessons">Lessons</button>
       <button class="tab" data-tab="method">How it works</button>
     </nav>
   </header>
@@ -83,10 +84,18 @@
             <div class="metric-row"><span>National two-party Dem vote</span><b id="natVote">&mdash;</b></div>
             <div class="metric-row"><span>Dem seat share</span><b id="seatShare">&mdash;</b></div>
             <div class="metric-row"><span>Seats vs. proportional</span><b id="propGap">&mdash;</b></div>
+            <div class="metric-row sub"><span>&mdash; as chamber power</span><b id="propGapShare">&mdash;</b></div>
             <div class="metric-row"><span>Efficiency gap</span><b id="effGap">&mdash;</b></div>
             <p class="hint" id="distortionNote"></p>
           </div>
         </aside>
+      </div>
+    </section>
+
+    <!-- LESSONS TAB -->
+    <section id="tab-lessons" class="tab-panel">
+      <div class="prose" id="lessons">
+        <div class="loading">Loading scenarios&hellip;</div>
       </div>
     </section>
 

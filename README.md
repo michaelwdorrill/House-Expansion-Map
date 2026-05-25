@@ -5,8 +5,11 @@ An interactive visualizer for expanding the US House of Representatives. Pick a 
 staying inside state lines, balanced by population, and colored by partisan lean &mdash; with
 live summaries of the partisan balance and how far the result departs from proportionality.
 
-The premise: smaller districts are harder to gerrymander safely, so vote/seat distortions
-should shrink as the House grows. This tool lets you see that.
+The premise: smaller districts are harder to gerrymander safely, and every seat is a smaller
+slice of a larger chamber, so a gerrymander's grip on power shrinks as the House grows. At the
+435-seat stop you can toggle between the **actual current districts** (119th Congress) and a
+neutral redraw to see today's real distortion; the **Lessons** tab walks through what the
+results say about expansion and gerrymandering, including the per-seat power (1/N) dilution.
 
 **Live site:** served from `docs/` via GitHub Pages.
 
@@ -36,6 +39,7 @@ pipeline/            offline build (Python)
   apportion.py       Huntington-Hill
   units.py           county geometry + population + votes (joined on FIPS)
   districting.py     equal-area county subdivision + splitline bisection
+  realmap.py         actual 119th-Congress districts (TIGER) + areal vote join
   build.py           generate per-scenario GeoJSON -> docs/data/
 docs/                static site (GitHub Pages root)
   index.html app.js styles.css
@@ -54,7 +58,13 @@ precincts and run `.github/workflows/build-data.yml` on a GitHub runner (unrestr
 
 Sources: county/state geometry (Vega Datasets, from Census TIGER), county population (JHU CSSE,
 from Census estimates), county presidential results 2016/2020/2024 (tonmcg), 2020 apportionment
-populations (US Census).
+populations (US Census), and current congressional-district boundaries (Census TIGER 2024
+`tl_2024_us_cd119`, fetched only by the build Action since census.gov is blocked in sandboxes).
+
+The real-districts baseline uses the actual gerrymandered map but apportions county votes onto
+districts by area (counties split across districts), so single-district lean is an estimate, not
+a precinct-exact figure. `tl_2024_us_cd119` reflects the 119th Congress as convened; mid-cycle
+maps redrawn after that need a newer boundary file dropped into the same pipeline step.
 
 ## Build locally
 
