@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/
+package-lock.json
+
+# Raw + cached pipeline data (large; regenerate via pipeline/download.py)
+/data/raw/
+/data/cache/
+
+# OS
+.DS_Store

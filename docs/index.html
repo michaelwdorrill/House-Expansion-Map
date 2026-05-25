@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>US House Expansion Map</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="title">
+      <h1>US House Expansion Map</h1>
+      <p class="tagline">What if the House of Representatives were bigger? Smaller districts are
+        harder to gerrymander &mdash; explore how the map and the partisan balance would change.</p>
+    </div>
+    <nav class="tabs">
+      <button class="tab active" data-tab="map">Map</button>
+      <button class="tab" data-tab="method">How it works</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- MAP TAB -->
+    <section id="tab-map" class="tab-panel active">
+      <div class="layout">
+        <div class="map-wrap">
+          <svg id="map" role="img" aria-label="US congressional district map"></svg>
+          <div id="tooltip" class="tooltip" hidden></div>
+          <div class="legend" id="legend"></div>
+        </div>
+
+        <aside class="panel">
+          <div class="control">
+            <div class="slider-top">
+              <span class="big" id="houseSize">435</span>
+              <span class="unit">representatives</span>
+            </div>
+            <input type="range" id="sizeSlider" min="0" max="0" step="1" value="0" />
+            <div class="slider-bottom">
+              <span id="perRep">761,169</span>
+              <span class="unit">people per representative</span>
+            </div>
+            <div class="ticks" id="sliderTicks"></div>
+          </div>
+
+          <div class="control">
+            <label for="modelSelect">Partisan model</label>
+            <select id="modelSelect">
+              <option value="blend" selected>Multi-cycle blend (2016 + 2020 + 2024)</option>
+              <option value="PRES24">2024 presidential</option>
+              <option value="PRES20">2020 presidential</option>
+              <option value="PRES16">2016 presidential</option>
+            </select>
+            <p class="hint">Two-party vote pooled over the selected cycle(s), summed into each
+              redrawn district.</p>
+          </div>
+
+          <div class="summary" id="summary">
+            <h2>Partisan balance</h2>
+            <div class="seatbar" id="seatbar"></div>
+            <table class="ratings" id="ratingsTable"></table>
+
+            <h2>Predicted control</h2>
+            <div class="metric-row"><span>Democratic-leaning seats</span><b id="demSeats">&mdash;</b></div>
+            <div class="metric-row"><span>Republican-leaning seats</span><b id="repSeats">&mdash;</b></div>
+            <div class="metric-row"><span>Competitive (toss-up)</span><b id="tossSeats">&mdash;</b></div>
+
+            <h2>Gerrymandering / distortion</h2>
+            <div class="metric-row"><span>National two-party Dem vote</span><b id="natVote">&mdash;</b></div>
+            <div class="metric-row"><span>Dem seat share</span><b id="seatShare">&mdash;</b></div>
+            <div class="metric-row"><span>Seats vs. proportional</span><b id="propGap">&mdash;</b></div>
+            <div class="metric-row"><span>Efficiency gap</span><b id="effGap">&mdash;</b></div>
+            <p class="hint" id="distortionNote"></p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- METHODOLOGY TAB -->
+    <section id="tab-method" class="tab-panel">
+      <div class="prose" id="methodology"></div>
+    </section>
+  </main>
+
+  <footer>
+    <span id="footerMeta"></span>
+  </footer>
+
+  <script src="vendor/d3.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
