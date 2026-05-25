@@ -76,6 +76,11 @@
       "name": "Apportionment populations (2020 Census)",
       "source": "US Census Bureau, 2020 Census Apportionment",
       "url": "https://www.census.gov/data/tables/2020/dec/2020-apportionment-data.html"
+    },
+    {
+      "name": "Current congressional districts (119th Congress)",
+      "source": "US Census Bureau, TIGER/Line 2024 (tl_2024_us_cd119)",
+      "url": "https://www2.census.gov/geo/tiger/TIGER2024/CD/"
     }
   ],
   "states": {
