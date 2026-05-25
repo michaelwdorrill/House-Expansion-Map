@@ -20,6 +20,15 @@ COUNTY_POPULATION = (
     "csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv"
 )
 
+# Current congressional district boundaries (119th Congress) -- Census TIGER.
+# This is the ACTUAL (gerrymandered) district map, used to build the real-lines
+# baseline that the neutral splitline scenarios are compared against. census.gov
+# is blocked in sandboxed dev environments, so this only resolves on an
+# unrestricted network (the GitHub Actions runner -- see build-data.yml).
+CD_BOUNDARIES = (
+    "https://www2.census.gov/geo/tiger/TIGER2024/CD/tl_2024_us_cd119.zip"
+)
+
 # County-level presidential results by FIPS -- tonmcg.
 COUNTY_RESULTS = {
     "PRES16": (
@@ -60,5 +69,10 @@ CITATIONS = [
         "name": "Apportionment populations (2020 Census)",
         "source": "US Census Bureau, 2020 Census Apportionment",
         "url": "https://www.census.gov/data/tables/2020/dec/2020-apportionment-data.html",
+    },
+    {
+        "name": "Current congressional districts (119th Congress)",
+        "source": "US Census Bureau, TIGER/Line 2024 (tl_2024_us_cd119)",
+        "url": "https://www2.census.gov/geo/tiger/TIGER2024/CD/",
     },
 ]

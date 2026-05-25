@@ -28,6 +28,14 @@ def main() -> int:
     fetch(sources.COUNTY_POPULATION, RAW / "county_population.csv")
     for key, url in sources.COUNTY_RESULTS.items():
         fetch(url, RAW / f"results_{key}.csv")
+
+    # Real congressional-district boundaries: only reachable on an unrestricted
+    # network. Best-effort so the neutral pipeline still builds when it is blocked.
+    try:
+        fetch(sources.CD_BOUNDARIES, RAW / "cd119.zip")
+    except Exception as exc:  # noqa: BLE001
+        print(f"  SKIP    cd119.zip ({exc}) -- real-lines baseline will be omitted")
+
     print("Done.")
     return 0
 
